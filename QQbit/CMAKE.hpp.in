@@ -1,1 +1,1 @@
-#define version "${PROJECT_VERSION}"
+#define qqbit_version "${PROJECT_VERSION}"

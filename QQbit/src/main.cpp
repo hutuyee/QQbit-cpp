@@ -14,13 +14,13 @@
 #include <memory>
 
 #include <boost/asio.hpp>
-#include <boost/beast.hpp>
 #include <boost/json.hpp>
+#include <boost/beast.hpp>
 
 #include <lua.hpp>
 
 #include "cmake.hpp"
-#include "web.hpp"
+#include "include/web.hpp"
 
 const char jsonFILEdata[] = "{\"WEBport\": 8080}";
 const char httpmessage[] = "HTTP/1.1 200 OK\n"
@@ -39,12 +39,14 @@ void WEBserver(unsigned int WEBport){
         boost::asio::ip::tcp::acceptor acc(io,boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(),WEBport));
         while(true){
             boost::asio::ip::tcp::socket sock(io);
-            acc.async_accept(io,[&io](boost::system::error_code ec , boost::asio::ip::tcp::socket){
-                
-            });
-
-            
-            io.run();
+            acc.accept(sock,ec);
+            if(ec){
+                std::cout << "accept error is " << ec.value() << " message is " << ec.message();
+                continue;
+            }
+            std::cout << "client ip is "<< sock.remote_endpoint().address().to_string()
+                        << " port is " << sock.remote_endpoint().port() << std::endl;
+            std::thread(web_message,std::move(sock)).detach();
         }
     }catch(boost::system::error_code &ec){
         std::cout <<"WEBserver value" << ec.value() << " error: "<< ec.message() << std::endl;
@@ -56,7 +58,7 @@ int main(int argc ,char *argv[]){
     #ifdef _WIN32
         std::system("chcp 65001");
     #endif
-    std::cout << "QQbit version: " << version << std::endl;
+    std::cout << "QQbit version: " << qqbit_version << std::endl;
     READfile.open("config.json");
     if(!READfile.is_open())
         std::cout << "config open no!" << std::endl;
@@ -77,6 +79,10 @@ int main(int argc ,char *argv[]){
         std::cout<< "config data in port: " << port << std::endl;
     }
     std::thread web(WEBserver,port);
-    web.join();
-
+    web.detach();
+    while(1){
+        char message[1024];
+        std::cin >> message;
+        if(strcmp(message, "exit") == 0)exit(0);
+    }
 }
