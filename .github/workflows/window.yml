@@ -73,3 +73,34 @@ jobs:
       # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --build-config ${{ matrix.build_type }}
+            - name: Download and install Boost
+  # You may pin to the exact commit or the version.
+  # uses: MarkusJx/install-boost@51b5604fed63e1e8f76d4b564002e9e7cdcce63a
+  uses: MarkusJx/install-boost@v2.4.5
+  with:
+    # The boost version to install, e.g. "1.73.0"
+    boost_version: 
+    # The toolset used to compile boost, e.g. "msvc"
+    toolset: # optional, default is 
+    # The platform version boost was compiled on, e.g. "18.04"
+    platform_version: # optional, default is 
+    # Whether the boost libraries are linked statically or dynamically
+    link: # optional, default is 
+    # The architecture the binaries were built for
+    arch: # optional, default is x86
+    # The dirctory to install boost into
+    boost_install_dir: # optional, default is 
+    # Wheter to use actions/cache to improve build times
+    cache: # optional, default is true
+                - name: Install Lua/LuaJIT
+  # You may pin to the exact commit or the version.
+  # uses: leafo/gh-actions-lua@35bcb06abec04ec87df82e08caa84d545348536e
+  uses: leafo/gh-actions-lua@v10.0.0
+  with:
+    # The version of Lua to install, must be available on https://www.lua.org/ftp/ or http://luajit.org/download.html
+    luaVersion: # optional, default is 5.4
+    # Command line flags passed to make when building Lua
+    luaCompileFlags: # optional
+    # Set to 'false' to skip restoring .lua from cache and always compile it
+    buildCache: # optional, default is true
+          
