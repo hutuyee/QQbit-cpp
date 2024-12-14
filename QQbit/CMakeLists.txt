@@ -7,9 +7,6 @@ cmake_policy(SET CMP0167 OLD)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
 
-set(Boost_ROOT "D:/boost_1_85_0")
-set(Boost_DIR "D:/boost_1_85_0/stage/lib/cmake/Boost-1.85.0")
-
 find_package(Boost REQUIRED json system regex)
 message("boost version:　${Boost_VERSION}")
 message("boost include: ${Boost_INCLUDE_DIRS}")
