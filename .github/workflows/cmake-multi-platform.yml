@@ -46,7 +46,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
+    - name: Build Boost
+      # You may pin to the exact commit or the version.
+      # uses: egor-tensin/build-boost@6e787373b50fd7c2ddb99f85d4e472061ff54ba8
+      uses: egor-tensin/build-boost@v1
+      with:
+        # Version to build
+        version: 1.85
+        # Space-separated list of libraries
+        libraries: use
+        # Toolset to use
+        toolset: default
+        # Target platform
+        platform: x64
+        # Configuration to build
+        configuration: Release
+        # Build static libraries
+        static: default
+        # Link to the static runtime
+        static-runtime: default
+        # Destination directory
+        directory: optional
     - name: Set reusable strings
       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
